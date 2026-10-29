@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Speech Demos · Oğuzhan Kurnaz</title>
+  <meta name="description" content="Interactive speech demos: speaker verification, voice conversion and voice-cloning text-to-speech.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231F3A5F'/><text x='16' y='22' font-family='Arial' font-weight='700' font-size='15' fill='white' text-anchor='middle'>OK</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html">Oğuzhan Kurnaz</a>
+      <nav class="nav" id="nav">
+        <a href="index.html#about" data-i18n="nav.about">About</a>
+        <a href="index.html#research" data-i18n="nav.research">Research</a>
+        <a href="index.html#publications" data-i18n="nav.publications">Publications</a>
+        <a href="index.html#cv" data-i18n="nav.cv">CV</a>
+        <a href="demos.html" class="nav-demo active" data-i18n="nav.demos">Demos</a>
+      </nav>
+      <div class="tools">
+        <button class="tool" id="langBtn" type="button" aria-label="Language">TR</button>
+        <button class="tool" id="themeBtn" type="button" aria-label="Theme">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+        <button class="tool menu-btn" id="menuBtn" type="button" aria-label="Menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-head">
+      <div class="wrap">
+        <h1 data-i18n="d.title">Speech demos</h1>
+        <p data-i18n="d.lead">Small, hands-on demos of the technology I work on. Record with your microphone or upload a file; audio is sent to a Hugging Face Space for processing and is not stored.</p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:0">
+      <div class="wrap">
+        <div class="tabs" id="tabs" role="tablist">
+          <button type="button" role="tab" data-tab="verification" class="on"><b data-i18n="d.sv.tab">Speaker verification</b><small data-i18n="d.sv.sub">Same speaker or not?</small></button>
+          <button type="button" role="tab" data-tab="conversion"><b data-i18n="d.vc.tab">Voice conversion</b><small data-i18n="d.vc.sub">Your speech, another voice</small></button>
+          <button type="button" role="tab" data-tab="cloning"><b data-i18n="d.tts.tab">Voice-cloning TTS</b><small data-i18n="d.tts.sub">Text spoken in a given voice</small></button>
+        </div>
+
+        <!-- Speaker verification -->
+        <div class="demo on" id="demo-verification">
+          <p class="demo-intro" data-i18n="d.sv.intro">An ECAPA-TDNN speaker embedding is extracted from each recording, and the cosine similarity between the two embeddings is compared with a decision threshold. This is the "ASV" half of the spoofing-aware speaker verification systems I study.</p>
+          <div class="slots">
+            <div class="card slot" data-slot="sv-enroll" data-sr="16000" data-max="30">
+              <h3 data-i18n="d.sv.a">1 · Enrollment recording</h3>
+              <p class="hint" data-i18n="d.sv.ah">A few seconds of the claimed speaker (5–15 s works well).</p>
+            </div>
+            <div class="card slot" data-slot="sv-test" data-sr="16000" data-max="30">
+              <h3 data-i18n="d.sv.b">2 · Test recording</h3>
+              <p class="hint" data-i18n="d.sv.bh">A different utterance — same person or someone else.</p>
+            </div>
+          </div>
+          <div class="run-row">
+            <button class="run" type="button" id="run-verification" data-i18n="d.sv.run">Verify</button>
+          </div>
+          <div class="status" id="status-verification"></div>
+          <div class="result" id="result-verification"></div>
+        </div>
+
+        <!-- Voice conversion -->
+        <div class="demo" id="demo-conversion">
+          <p class="demo-intro" data-i18n="d.vc.intro">Any-to-any voice conversion with kNN-VC: each WavLM frame of the source speech is replaced by its nearest neighbours from the target speaker's recording, then vocoded. The content comes from the source, the voice from the target. Longer target recordings give better results.</p>
+          <div class="slots">
+            <div class="card slot" data-slot="vc-source" data-sr="16000" data-max="30">
+              <h3 data-i18n="d.vc.a">1 · Source speech (what is said)</h3>
+              <p class="hint" data-i18n="d.vc.ah">Record yourself saying something (up to 30 s).</p>
+            </div>
+            <div class="card slot" data-slot="vc-target" data-sr="16000" data-max="120">
+              <h3 data-i18n="d.vc.b">2 · Target voice (who says it)</h3>
+              <p class="hint" data-i18n="d.vc.bh">A recording of the target voice — 30 s to 2 min is ideal.</p>
+            </div>
+          </div>
+          <div class="run-row">
+            <button class="run" type="button" id="run-conversion" data-i18n="d.vc.run">Convert</button>
+            <label class="consent"><input type="checkbox" id="consent-conversion"><span data-i18n="d.consent">I own these recordings or have the speaker's permission, and I will not use the output to impersonate or deceive anyone.</span></label>
+          </div>
+          <div class="status" id="status-conversion"></div>
+          <div class="result" id="result-conversion"></div>
+        </div>
+
+        <!-- Voice cloning TTS -->
+        <div class="demo" id="demo-cloning">
+          <p class="demo-intro" data-i18n="d.tts.intro">Zero-shot voice-cloning text-to-speech with XTTS-v2: a short reference recording conditions the model, which then speaks your text in that voice. Supports Turkish, English and 15 other languages.</p>
+          <div class="slots">
+            <div class="card slot-text">
+              <h3 data-i18n="d.tts.a">1 · Text</h3>
+              <p class="hint" data-i18n="d.tts.ah">What should be said (max. 300 characters).</p>
+              <textarea id="tts-text" maxlength="300"></textarea>
+              <div class="field-row">
+                <label><span data-i18n="d.tts.lang">Language</span>
+                  <select id="tts-lang">
+                    <option value="tr">Türkçe</option><option value="en">English</option><option value="de">Deutsch</option>
+                    <option value="fr">Français</option><option value="es">Español</option><option value="it">Italiano</option>
+                    <option value="ru">Русский</option><option value="ar">العربية</option>
+                  </select>
+                </label>
+                <span id="tts-count">0 / 300</span>
+              </div>
+            </div>
+            <div class="card slot" data-slot="tts-ref" data-sr="24000" data-max="30">
+              <h3 data-i18n="d.tts.b">2 · Reference voice</h3>
+              <p class="hint" data-i18n="d.tts.bh">6–20 s of clean speech from the voice to clone.</p>
+            </div>
+          </div>
+          <div class="run-row">
+            <button class="run" type="button" id="run-cloning" data-i18n="d.tts.run">Synthesize</button>
+            <label class="consent"><input type="checkbox" id="consent-cloning"><span data-i18n="d.consent">I own these recordings or have the speaker's permission, and I will not use the output to impersonate or deceive anyone.</span></label>
+          </div>
+          <div class="status" id="status-cloning"></div>
+          <div class="result" id="result-cloning"></div>
+        </div>
+
+        <div class="notice">
+          <p data-i18n="d.why">Why these demos? Voice conversion and TTS are exactly the attacks that spoofing-aware speaker verification must withstand: try converting your voice and then verifying it against your real recording.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <span>© <span id="year"></span> Oğuzhan Kurnaz</span>
+      <a id="footerMail"></a>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/demos.js"></script>
+</body>
+</html>
