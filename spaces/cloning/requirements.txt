@@ -1,0 +1,7 @@
+# CPU-only torch build; remove this line on GPU / ZeroGPU hardware.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.4.1
+torchaudio==2.4.1
+coqui-tts==0.27.5
+transformers==4.57.6
+soundfile

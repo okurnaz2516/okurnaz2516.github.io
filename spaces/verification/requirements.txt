@@ -1,0 +1,6 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.4.1
+torchaudio==2.4.1
+speechbrain==1.0.3
+huggingface_hub>=0.33.5,<1.0
+soundfile

@@ -63,7 +63,9 @@
       $("heroActions").innerHTML =
         `<a class="btn primary" href="${esc(L(S.cv))}" download>${icons.download}${t("btn.cv")}</a>` +
         `<a class="btn" href="mailto:${esc(S.email)}">${icons.mail}${t("btn.mail")}</a>` +
-        `<a class="btn" href="demos.html">${icons.wave}${t("btn.demos")}</a>` + ext;
+        // Demos hidden until the Hugging Face Spaces are deployed (see spaces/README.md):
+        // `<a class="btn" href="demos.html">${icons.wave}${t("btn.demos")}</a>` +
+        ext;
     }
     if ($("stats")) $("stats").innerHTML = S.stats.map((s) => `<div class="stat"><b>${esc(s.value)}</b><span>${esc(L(s.label))}</span></div>`).join("");
     if ($("about-text")) $("about-text").innerHTML = L(S.about).map((p) => `<p>${p}</p>`).join("");
